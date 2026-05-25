@@ -31,8 +31,10 @@
             <div id="local-model-content" class="tab-content active">
             </div>
 
-            <div id="chat-gpt-content" class="tab-content" class="center">
-                <input type="password" id="api-key" placeholder="Enter your ChatGPT API key" class="input">
+                        <div id="chat-gpt-content" class="tab-content" class="center">
+                <input type="password" id="api-key" placeholder="Enter your API key (OpenAI/OpenRouter)" class="input">
+                <input type="text" id="api-base-url" placeholder="Base URL (e.g., https://openrouter.ai/api/v1)" class="input" style="margin-top: 5px;">
+                <input type="text" id="api-model" placeholder="Model (e.g., openai/gpt-3.5-turbo)" class="input" style="margin-top: 5px;">
             </div>
 
             <button type="button" id="start-analysis" disabled>Analyze Privacy Policy</button>

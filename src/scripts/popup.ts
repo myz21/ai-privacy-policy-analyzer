@@ -12,12 +12,16 @@ const ui = {
     localModelContent: document.getElementById('local-model-content') as HTMLDivElement,
     chatModelContent: document.getElementById('chat-gpt-content') as HTMLDivElement,
     apiKeyInput: document.getElementById('api-key') as HTMLInputElement,
+    apiBaseUrlInput: document.getElementById('api-base-url') as HTMLInputElement,
+    apiModelInput: document.getElementById('api-model') as HTMLInputElement,
 };
 
 let selectedModelType = 'local-model';
 let privacyPolicy = '';
 let analysisResult = '';
 let userApiKey = '';
+let userApiBaseUrl = '';
+let userApiModel = '';
 let openAiClient: OpenAI | null = null;
 
 const buildPrompt = (policy: string) => {
@@ -48,7 +52,9 @@ const updateResult = (newToken: string) => {
 
 const initializeOpenAiClient = () => {
     if (userApiKey) {
-        openAiClient = openAiClient || new OpenAI({ apiKey: userApiKey, dangerouslyAllowBrowser: true });
+        const config: any = { apiKey: userApiKey, dangerouslyAllowBrowser: true };
+        if (userApiBaseUrl) config.baseURL = userApiBaseUrl;
+        openAiClient = new OpenAI(config);
     }
 };
 
@@ -86,7 +92,7 @@ const analyzeLocal = async () => {
 const analyzeChat = async () => {
     if (!openAiClient) throw new Error('OpenAI client not initialized');
     const stream = await openAiClient.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: userApiModel || 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: buildPrompt(privacyPolicy) }],
         stream: true,
     });
@@ -113,6 +119,15 @@ const setupEventListeners = () => {
         userApiKey = ui.apiKeyInput.value.trim();
         ui.startAnalysisButton.disabled = !userApiKey;
         initializeOpenAiClient();
+    });
+
+    ui.apiBaseUrlInput.addEventListener('input', () => {
+        userApiBaseUrl = ui.apiBaseUrlInput.value.trim();
+        initializeOpenAiClient();
+    });
+
+    ui.apiModelInput.addEventListener('input', () => {
+        userApiModel = ui.apiModelInput.value.trim();
     });
 
     [ui.localModelTab, ui.chatModelTab].forEach(tab =>
