@@ -40,6 +40,13 @@ By leveraging AI-driven language models, the extension ensures that complex lega
 
 The extension's architecture is divided into key components, each with a specific role in delivering its functionality.
 
+### Operations Flow Diagram
+Below is the activity diagram mapping out the end-to-end privacy policy discovery, extraction, and AI-driven analysis flow of the extension:
+
+![AI Privacy Policy Analyzer Activity Diagram](docs/activity-diagram.svg)
+
+---
+
 ### 1. **Content Script (`content.ts`)**
 The content script interacts with the webpage to extract privacy policy links. It uses regular expressions to identify and prioritize URLs related to privacy policies, terms of service, and other legal documents. 
 
